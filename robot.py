@@ -292,8 +292,6 @@ class UnderwaterRobot(Robot):
         """
         self.depth = self.depth - squares
 
-class NewError(Exception):
-    pass
 
 
     # from robot import UnderwaterRobot
