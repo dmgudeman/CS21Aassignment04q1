@@ -91,99 +91,111 @@ class Robot(object):
         """
         evaluates the feasibility of taking a step into a larger row
         will not move robot if the robots battery 0
-        will move only if the next coordinate is True, obstacles are False
+        will move only if the next coordinate is true, obstacles are false
         """
         next_row = self.row + 1 # anticipated row
 
         # check maze length to make sure does not go off the maze board
         # for some reason this throughs an error but behaves to specs in all
-        # other aspects. I put in a try catch to suppress the error message
+        # other aspects.
 
         if next_row >= 0 & next_row < Robot.maze_size:
-
             if Robot.maze[next_row][self.column]:   # test for availability
                 if self.battery > 0:
-                    self.row = next_row                 # if square = true move
-                    print("self.row:", self.row)
-                    self.battery = self.battery - 1
+                    self.row = next_row                 # if square = True move
+                    self.battery -= 1
         return self
 
     def one_step_back(self):
-        """
-        enter the method's docstring here
+        """"
+        evaluates the feasibility of taking a step into a smaller row
+        will not move robot if the robots battery 0
+        will move only if the next coordinate is true, obstacles are false
         """
         next_row = self.row - 1                 # anticipated row
-        if next_row >= 0 & next_row < Robot.maze_size:
-            if Robot.maze[next_row][self.column]:   # test for availability
-                if self.battery > 0:
-                    self.row = next_row                 # if square = true move
-                    self.battery = self.battery - 1
+        if next_row >= 0 & next_row < Robot.maze_size: # edge test
+            if Robot.maze[next_row][self.column]:   # test for obstacle
+                if self.battery > 0:            # checks battery
+                    self.row = next_row         # moves robot
+                    self.battery -= 1           # reduces battery by 1
         return self
 
 
     def one_step_right(self):
         """
-        enter the method's docstring here
+        evaluates the feasibility of taking a step into a larger column
+        will not move robot if the robots battery 0
+        will move only if the next coordinate is true, obstacles are false
         """
-        next_column = self.column + 1
-        if next_column >= 0 & next_column < Robot.maze_size:
-            if Robot.maze[self.row][next_column]:
-                if self.battery > 0:
-                    self.column = next_column
-                    self.battery = self.battery - 1
+        next_column = self.column + 1            # anticipated column
+        if next_column >= 0 & next_column < Robot.maze_size: # edge test
+            if Robot.maze[self.row][next_column]:   # test for obstacle
+                if self.battery > 0:             # checks the battery
+                    self.column = next_column    # makes move
+                    self.battery -= 1            # reduces battery by 1
         return self
 
     def one_step_left(self):
         """
-        enter the method's docstring here
+        evaluates the feasibility of taking a step into a smaller column
+        will not move robot if the robots battery 0
+        will move only if the next coordinate is true, obstacles are false
         """
-        next_column = self.column - 1
-        if next_column >= 0 & next_column < Robot.maze_size:
-            if Robot.maze[self.row][next_column]:
-                if self.battery > 0:
-                    self.column = next_column
-                    self.battery = self.battery - 1
+        next_column = self.column - 1           # anticipated column
+        if next_column >= 0 & next_column < Robot.maze_size: # edge test
+            if Robot.maze[self.row][next_column]:  # test for obstacle
+                if self.battery > 0:            # checks battery
+                    self.column = next_column   # moves robot
+                    self.battery -= 1           # reduces battery by 1
         return self
 
     def forward(self, steps):
         """
-        enter the method's docstring here
+        The argument supplies how many steps forward to take
+
+        :param: steps(string): number of steps to take
+        :return: the robot object
         """
         i = 1
-        while i <= steps:
-            print(i)
+        while i <= steps: # steps arg defines No. one_step forward fxn calls
             self.one_step_forward()
-            i += 1
+            i += 1        # increments index with each call
 
     def backward(self, steps):
         """
-        enter the method's docstring here
+        The argument supplies how many steps backward to take
+
+        :param: steps(string): number of steps to take
+        :return: the robot object
         """
         i = 1
-        while i <= steps:
-            print(i)
+        while i <= steps: # step param defines No. one_step_backward fxn calls
             self.one_step_back()
-            i += 1
+            i += 1        # increment index with each call
 
     def right(self, steps):
         """
-        enter the method's docstring here
+        The argument supplies how many steps right to take
+
+        :param: steps(string): number of steps to take
+        :return: the robot object
         """
         i = 1
-        while i <= steps:
-            print(i)
+        while i <= steps: # step param defines No. of one_step_right fxn calls
             self.one_step_right()
-            i += 1
+            i += 1        # increment index with each call
 
     def left(self, steps):
         """
-        enter the method's docstring here
+        The argument supplies how many steps left to take
+
+        :param: steps(string): number of steps to take
+        :return: the robot object
         """
         i = 1
-        while i <= steps:
-            print(i)
+        while i <= steps: # step param defines No. of one_step_left fxn calls
             self.one_step_left()
-            i += 1
+            i += 1        # increment index with each call
 
     # the method below has been written for you
     # you can use it when testing your class
@@ -263,37 +275,47 @@ class Robot(object):
                                self.maze_size * self.unit_size )
         root.mainloop()
 
-# Enter you UnderwaterRobot Class definition below
 class UnderwaterRobot(Robot):
     """
+    Represents a robot that can move in two dimensions and
+        dive underwater
 
+    Arguments:
+    name (string): name of the robot
+    color (string): color of the robot
+    depth (int, oprional): depth of start, defaults to 0
+    row (int, optional): start row, defaults to 0
+    column (int, optional): start column, defaults to 0
+
+    Attributes:
+    name (string): name of the robot
+    color (string): color of the robot
+    depth (int): represents the depth in squares of the robot
+    row (int): robot's row
+    column (int): robot's column
+    battery (int): how many squares the robot can move without a recharge
     """
     def __init__(self, name, color, depth=0, column=0, row=0):
-        """
-
-        :param name:
-        :param color:
-        :param depth:
-        :param column:
-        :param row:
-        :return:
-        """
         self.depth = depth
         Robot.__init__(self, name, color, column, row)
 
     def __str__(self):
+        """
+        returns a string describing the robot
+
+        :return (string): description includes: name, color, ability to dive
+        """
         return self.name + ' is a ' + self.color + ' robot diving underwater.'
 
     def dive(self, squares):
         """
-
-        :param squares:
-        :return:
+        moves the robot up and down in water column.
+        :param squares (int): number of squares to move. positive numbers
+             descend and negative numbers rise
+        :return: robot object
         """
-        self.depth = self.depth - squares
+        self.depth = self.depth + squares
 
 
 
-    # from robot import UnderwaterRobot
-    # nemo = UnderwaterRobot('nemo', 'purple')
 
